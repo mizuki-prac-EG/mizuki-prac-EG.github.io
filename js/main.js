@@ -1,13 +1,21 @@
 
-const targets = document.querySelectorAll(
-  ".hero, .section, footer, .card"
+const onceTargets = document.querySelectorAll(
+  ".hero, .section, footer"
 );
 
-targets.forEach((target) => {
+const repeatTargets = document.querySelectorAll(".card");
+
+// 見出し・セクション：初回だけ表示
+onceTargets.forEach((target) => {
   target.classList.add("reveal");
 });
 
-const observer = new IntersectionObserver(
+// カード：画面に入るたびに表示
+repeatTargets.forEach((target) => {
+  target.classList.add("reveal");
+});
+
+const onceObserver = new IntersectionObserver(
   (entries, observer) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
@@ -16,11 +24,26 @@ const observer = new IntersectionObserver(
       }
     });
   },
-  {
-    threshold: 0.12
-  }
+  { threshold: 0.12 }
 );
 
-targets.forEach((target) => {
-  observer.observe(target);
+onceTargets.forEach((target) => {
+  onceObserver.observe(target);
+});
+
+const cardObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+      } else {
+        entry.target.classList.remove("is-visible");
+      }
+    });
+  },
+  { threshold: 0.12 }
+);
+
+repeatTargets.forEach((target) => {
+  cardObserver.observe(target);
 });
