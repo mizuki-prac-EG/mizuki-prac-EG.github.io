@@ -97,7 +97,7 @@ function initializeAwsLearningPage() {
     return;
   }
 
-  console.log(`[AWS検索] 初期化成功：${cards.length}分野`);
+  console.log("[AWS検索] 初期化成功：" + cards.length + "分野");
 
   // 全角・半角や英字の大文字・小文字を整える
   function normalizeText(text) {
@@ -147,9 +147,9 @@ function initializeAwsLearningPage() {
     noResults.hidden = visibleCount !== 0;
 
     console.log(
-      `[AWS検索] キーワード="${keyword}", ` +
-      `分野="${selectedCategory}", ` +
-      `表示件数=${visibleCount}`
+       "[AWS検索] キーワード=\"" + keyword +
+       "\", 分野=\"" + selectedCategory +
+       "\", 表示件数=" + visibleCount
     );
   }
 
