@@ -1,16 +1,28 @@
-
+```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="AWSの学習記録やサービスの特徴をまとめたページ。">
+
+  <meta
+    name="description"
+    content="AWSの主要サービスを11分野に分類し、役割や特徴を整理した学習ノート。"
+  >
+
   <title>AWSの学習ノート | MIZUKI'S LAB</title>
+
   <link rel="stylesheet" href="../css/style.css">
+  <script src="../js/main.js" defer></script>
 </head>
+
 <body>
+
+  <!-- ヘッダー -->
+
   <header class="header">
     <a class="logo" href="../index.html">MIZUKI'S LAB</a>
+
     <nav>
       <a href="../index.html#about">私について</a>
       <a href="../index.html#it">IT・AWS</a>
@@ -19,49 +31,677 @@
   </header>
 
   <main>
+
+    <!-- ページ紹介 -->
+
     <section class="hero">
       <p class="eyebrow">LEARNING / AWS</p>
+
       <h1>AWSの学習ノート</h1>
-      <p>AWSのサービスやクラウドの仕組みについて、学んだことを整理して記録しています。</p>
-      <a class="button" href="../index.html#it">← 学習記録に戻る</a>
+
+      <p>
+        AWSのサービスを分野ごとに整理し、
+        役割や特徴、サービス同士の違いを自分の言葉でまとめています。
+      </p>
+
+      <a class="button" href="../index.html#it">
+        ← 学習記録に戻る
+      </a>
     </section>
+
+    <!-- このページについて -->
 
     <section class="section">
       <p class="eyebrow">ABOUT</p>
+
       <h2>このページについて</h2>
-      <p>学習したサービスの役割や特徴、似たサービスとの違いなどを、自分の理解を深めるためにまとめていきます。</p>
+
+      <p>
+        AWSには多くのサービスがあり、それぞれ役割や得意分野が異なります。
+        このページでは、サービスを11分野に分類して整理しています。
+        分野を選択すると、その分野の役割や利用場面を確認できます。
+      </p>
     </section>
 
-    <section class="section">
-      <p class="eyebrow">TOPICS</p>
-      <h2>学習テーマ</h2>
-      <div class="cards">
-        <article class="card">
-          <span>COMPUTE</span>
-          <h3>コンピューティング</h3>
-          <p>EC2やLambdaなど、アプリケーションを動かすサービス。</p>
-        </article>
-        <article class="card">
-          <span>STORAGE</span>
-          <h3>ストレージ</h3>
-          <p>S3やEBSなど、データを保存するサービス。</p>
-        </article>
-        <article class="card">
-          <span>DATABASE</span>
-          <h3>データベース</h3>
-          <p>RDSやDynamoDBなど、データを管理するサービス。</p>
-        </article>
-        <article class="card">
-          <span>NETWORK</span>
-          <h3>ネットワーク</h3>
-          <p>VPCなど、クラウド上の通信や接続の仕組み。</p>
-        </article>
+    <!-- AWS分野一覧 -->
+
+    <section class="section" id="aws-topics">
+
+      <p class="eyebrow">AWS SERVICE CATEGORIES</p>
+
+      <h2>分野から探す</h2>
+
+      <p>
+        キーワードや分野を指定して、知りたいAWSサービスを探せます。
+      </p>
+
+      <!-- 検索・フィルター -->
+
+      <div class="aws-search-panel">
+
+        <div class="aws-form-group">
+          <label for="aws-search">キーワード検索</label>
+
+          <input
+            class="aws-input"
+            type="search"
+            id="aws-search"
+            placeholder="例：S3、データベース、暗号化"
+            autocomplete="off"
+          >
+
+          <p class="aws-search-hint">
+            分野名・サービス名・役割などから検索できます。
+          </p>
+        </div>
+
+        <div class="aws-form-group">
+          <label for="aws-category-filter">対象分野</label>
+
+          <select class="aws-select" id="aws-category-filter">
+            <option value="all">すべての分野</option>
+            <option value="compute">コンピューティング</option>
+            <option value="storage">ストレージ</option>
+            <option value="database">データベース</option>
+            <option value="network">ネットワーク・コンテンツ配信</option>
+            <option value="security">セキュリティ・認証・権限管理</option>
+            <option value="analytics">データ分析・データ処理</option>
+            <option value="integration">アプリケーション統合・メッセージング</option>
+            <option value="operations">運用・監視・管理</option>
+            <option value="automation">IaC・構築・デプロイ・自動化</option>
+            <option value="migration">移行・転送・災害対策</option>
+            <option value="edge">コンテンツ配信・エッジ・フロントエンド</option>
+          </select>
+        </div>
+
       </div>
+
+      <!-- 検索結果 -->
+
+      <div class="aws-results-header">
+
+        <p
+          class="aws-results-count"
+          id="aws-results-count"
+          aria-live="polite"
+        >
+          11分野を表示中
+        </p>
+
+        <button
+          class="aws-reset-button"
+          id="aws-reset"
+          type="button"
+        >
+          検索条件をリセット
+        </button>
+
+      </div>
+
+      <!-- カード一覧 -->
+
+      <div class="cards aws-category-grid" id="aws-category-grid">
+
+        <!-- 01 コンピューティング -->
+
+        <details
+          class="card aws-category-card"
+          data-category="compute"
+          data-search="コンピューティング compute ec2 lambda elastic beanstalk ecs eks fargate batch 仮想サーバー コンテナ 実行"
+        >
+          <summary>
+            <span class="aws-category-label">01 / COMPUTE</span>
+
+            <h3 class="aws-category-title">コンピューティング</h3>
+
+            <span class="aws-service-label">主要サービス</span>
+
+            <ul class="aws-service-list">
+              <li>Amazon EC2</li>
+              <li>AWS Lambda</li>
+              <li>Elastic Beanstalk</li>
+              <li>Amazon ECS</li>
+              <li>Amazon EKS</li>
+              <li>AWS Fargate</li>
+              <li>AWS Batch</li>
+            </ul>
+          </summary>
+
+          <div class="aws-card-detail">
+            <h4>この分野の役割</h4>
+
+            <p>
+              アプリケーションやプログラムを実行するための計算環境を提供します。
+              仮想サーバーを管理する方法から、サーバー管理を抑えて
+              プログラムやコンテナを実行する方法まであります。
+            </p>
+
+            <h4>主な利用場面</h4>
+
+            <ul>
+              <li>仮想サーバーを構築する</li>
+              <li>イベントに応じてプログラムを実行する</li>
+              <li>コンテナアプリケーションを動かす</li>
+              <li>バッチ処理を実行する</li>
+            </ul>
+
+            <p class="aws-card-note">
+              学習ポイント：サーバー管理の有無、実行方式、拡張性の違い。
+            </p>
+          </div>
+        </details>
+
+        <!-- 02 ストレージ -->
+
+        <details
+          class="card aws-category-card"
+          data-category="storage"
+          data-search="ストレージ storage s3 ebs efs fsx glacier storage gateway オブジェクト ブロック ファイル バックアップ アーカイブ"
+        >
+          <summary>
+            <span class="aws-category-label">02 / STORAGE</span>
+
+            <h3 class="aws-category-title">ストレージ</h3>
+
+            <span class="aws-service-label">主要サービス</span>
+
+            <ul class="aws-service-list">
+              <li>Amazon S3</li>
+              <li>Amazon EBS</li>
+              <li>Amazon EFS</li>
+              <li>Amazon FSx</li>
+              <li>S3 Glacier</li>
+              <li>Storage Gateway</li>
+            </ul>
+          </summary>
+
+          <div class="aws-card-detail">
+            <h4>この分野の役割</h4>
+
+            <p>
+              ファイル、アプリケーションのデータ、バックアップなどを保存します。
+              データの種類やアクセス頻度、共有方法、コストに応じて
+              適切なストレージを選択します。
+            </p>
+
+            <h4>主な利用場面</h4>
+
+            <ul>
+              <li>画像やログを保存する</li>
+              <li>EC2のディスクを用意する</li>
+              <li>複数のサーバーでファイルを共有する</li>
+              <li>長期間アクセスしないデータを保管する</li>
+            </ul>
+
+            <p class="aws-card-note">
+              学習ポイント：オブジェクト・ブロック・ファイルの違い。
+            </p>
+          </div>
+        </details>
+
+        <!-- 03 データベース -->
+
+        <details
+          class="card aws-category-card"
+          data-category="database"
+          data-search="データベース database rds aurora dynamodb elasticache memorydb redshift documentdb sql nosql キャッシュ 分析"
+        >
+          <summary>
+            <span class="aws-category-label">03 / DATABASE</span>
+
+            <h3 class="aws-category-title">データベース</h3>
+
+            <span class="aws-service-label">主要サービス</span>
+
+            <ul class="aws-service-list">
+              <li>Amazon RDS</li>
+              <li>Amazon Aurora</li>
+              <li>Amazon DynamoDB</li>
+              <li>Amazon ElastiCache</li>
+              <li>Amazon MemoryDB</li>
+              <li>Amazon Redshift</li>
+              <li>Amazon DocumentDB</li>
+            </ul>
+          </summary>
+
+          <div class="aws-card-detail">
+            <h4>この分野の役割</h4>
+
+            <p>
+              アプリケーションが利用するデータを保存・検索・更新します。
+              データの構造やアクセス方法、処理速度、可用性などの要件に応じて、
+              リレーショナルデータベースやNoSQLなどを選択します。
+            </p>
+
+            <h4>主な利用場面</h4>
+
+            <ul>
+              <li>業務システムのデータを管理する</li>
+              <li>大量のキー・バリュー型データを扱う</li>
+              <li>読み込みを高速化する</li>
+              <li>大量のデータを分析する</li>
+            </ul>
+
+            <p class="aws-card-note">
+              学習ポイント：RDS・DynamoDB・ElastiCache・Redshiftの使い分け。
+            </p>
+          </div>
+        </details>
+
+        <!-- 04 ネットワーク・コンテンツ配信 -->
+
+        <details
+          class="card aws-category-card"
+          data-category="network"
+          data-search="ネットワーク コンテンツ配信 network vpc elb alb nlb route 53 dns cloudfront direct connect site-to-site vpn transit gateway privatelink global accelerator 通信 接続"
+        >
+          <summary>
+            <span class="aws-category-label">04 / NETWORK</span>
+
+            <h3 class="aws-category-title">ネットワーク・コンテンツ配信</h3>
+
+            <span class="aws-service-label">主要サービス</span>
+
+            <ul class="aws-service-list">
+              <li>Amazon VPC</li>
+              <li>Elastic Load Balancing</li>
+              <li>Amazon Route 53</li>
+              <li>Amazon CloudFront</li>
+              <li>AWS Direct Connect</li>
+              <li>Site-to-Site VPN</li>
+              <li>Transit Gateway</li>
+              <li>AWS PrivateLink</li>
+              <li>Global Accelerator</li>
+            </ul>
+          </summary>
+
+          <div class="aws-card-detail">
+            <h4>この分野の役割</h4>
+
+            <p>
+              AWS上のネットワークを構築し、リソース同士の通信や
+              インターネットとの接続を管理します。
+              通信の振り分け、名前解決、拠点間接続なども扱います。
+            </p>
+
+            <h4>主な利用場面</h4>
+
+            <ul>
+              <li>クラウド上にネットワークを構築する</li>
+              <li>複数のサーバーに通信を振り分ける</li>
+              <li>ドメイン名からサービスに接続する</li>
+              <li>社内ネットワークとAWSを接続する</li>
+            </ul>
+
+            <p class="aws-card-note">
+              学習ポイント：VPC・サブネット・ルートテーブル・DNS・接続方式。
+            </p>
+          </div>
+        </details>
+
+        <!-- 05 セキュリティ -->
+
+        <details
+          class="card aws-category-card"
+          data-category="security"
+          data-search="セキュリティ 認証 権限管理 security iam identity center kms secrets manager certificate manager acm waf shield guardduty security hub cognito 暗号化 脅威"
+        >
+          <summary>
+            <span class="aws-category-label">05 / SECURITY</span>
+
+            <h3 class="aws-category-title">セキュリティ・認証・権限管理</h3>
+
+            <span class="aws-service-label">主要サービス</span>
+
+            <ul class="aws-service-list">
+              <li>AWS IAM</li>
+              <li>IAM Identity Center</li>
+              <li>AWS KMS</li>
+              <li>Secrets Manager</li>
+              <li>AWS Certificate Manager</li>
+              <li>AWS WAF</li>
+              <li>AWS Shield</li>
+              <li>Amazon GuardDuty</li>
+              <li>AWS Security Hub</li>
+              <li>Amazon Cognito</li>
+            </ul>
+          </summary>
+
+          <div class="aws-card-detail">
+            <h4>この分野の役割</h4>
+
+            <p>
+              AWSリソースへのアクセス権限、データの暗号化、
+              認証情報の保護、脅威の検出などを通じて、
+              システムやデータの安全性を確保します。
+            </p>
+
+            <h4>主な利用場面</h4>
+
+            <ul>
+              <li>ユーザーごとに操作できる範囲を制限する</li>
+              <li>保存データを暗号化する</li>
+              <li>パスワードやAPIキーを管理する</li>
+              <li>不審な操作や攻撃を検知する</li>
+            </ul>
+
+            <p class="aws-card-note">
+              学習ポイント：認証と認可、暗号化、アクセス制御、脅威検出。
+            </p>
+          </div>
+        </details>
+
+        <!-- 06 データ分析・データ処理 -->
+
+        <details
+          class="card aws-category-card"
+          data-category="analytics"
+          data-search="データ分析 データ処理 analytics athena glue kinesis data streams data firehose emr quicksight lake formation data exchange etl データレイク BI ストリーミング"
+        >
+          <summary>
+            <span class="aws-category-label">06 / ANALYTICS</span>
+
+            <h3 class="aws-category-title">データ分析・データ処理</h3>
+
+            <span class="aws-service-label">主要サービス</span>
+
+            <ul class="aws-service-list">
+              <li>Amazon Athena</li>
+              <li>AWS Glue</li>
+              <li>Amazon Kinesis Data Streams</li>
+              <li>Amazon Data Firehose</li>
+              <li>Amazon EMR</li>
+              <li>Amazon QuickSight</li>
+              <li>AWS Lake Formation</li>
+              <li>AWS Data Exchange</li>
+            </ul>
+          </summary>
+
+          <div class="aws-card-detail">
+            <h4>この分野の役割</h4>
+
+            <p>
+              大量のデータを収集・加工・蓄積・分析し、
+              意思決定や業務改善に役立つ情報を取り出します。
+              リアルタイム処理から大規模なデータ分析まで対応します。
+            </p>
+
+            <h4>主な利用場面</h4>
+
+            <ul>
+              <li>S3上のデータをSQLで分析する</li>
+              <li>複数のデータソースを加工・統合する</li>
+              <li>リアルタイムのイベントデータを処理する</li>
+              <li>分析結果をダッシュボードで表示する</li>
+            </ul>
+
+            <p class="aws-card-note">
+              学習ポイント：データ収集・ETL・データレイク・分析の違い。
+            </p>
+          </div>
+        </details>
+
+        <!-- 07 アプリケーション統合 -->
+
+        <details
+          class="card aws-category-card"
+          data-category="integration"
+          data-search="アプリケーション統合 メッセージング integration sqs sns eventbridge step functions amazon mq キュー 通知 イベント ワークフロー 非同期"
+        >
+          <summary>
+            <span class="aws-category-label">07 / INTEGRATION</span>
+
+            <h3 class="aws-category-title">アプリケーション統合・メッセージング</h3>
+
+            <span class="aws-service-label">主要サービス</span>
+
+            <ul class="aws-service-list">
+              <li>Amazon SQS</li>
+              <li>Amazon SNS</li>
+              <li>Amazon EventBridge</li>
+              <li>AWS Step Functions</li>
+              <li>Amazon MQ</li>
+            </ul>
+          </summary>
+
+          <div class="aws-card-detail">
+            <h4>この分野の役割</h4>
+
+            <p>
+              複数のアプリケーションやAWSサービスを連携させます。
+              メッセージを介して処理を分離したり、
+              イベントに応じて処理を実行したりできます。
+            </p>
+
+            <h4>主な利用場面</h4>
+
+            <ul>
+              <li>処理をキューにためて順次実行する</li>
+              <li>複数の宛先に通知を送る</li>
+              <li>イベントをきっかけに処理を開始する</li>
+              <li>複数の処理をワークフローとして組み合わせる</li>
+            </ul>
+
+            <p class="aws-card-note">
+              学習ポイント：SQS・SNS・EventBridgeの使い分け。
+            </p>
+          </div>
+        </details>
+
+        <!-- 08 運用・監視・管理 -->
+
+        <details
+          class="card aws-category-card"
+          data-category="operations"
+          data-search="運用 監視 管理 operations cloudwatch cloudtrail config systems manager trusted advisor health organizations control tower ログ メトリクス アカウント"
+        >
+          <summary>
+            <span class="aws-category-label">08 / OPERATIONS</span>
+
+            <h3 class="aws-category-title">運用・監視・管理</h3>
+
+            <span class="aws-service-label">主要サービス</span>
+
+            <ul class="aws-service-list">
+              <li>Amazon CloudWatch</li>
+              <li>AWS CloudTrail</li>
+              <li>AWS Config</li>
+              <li>AWS Systems Manager</li>
+              <li>AWS Trusted Advisor</li>
+              <li>AWS Health</li>
+              <li>AWS Organizations</li>
+              <li>AWS Control Tower</li>
+            </ul>
+          </summary>
+
+          <div class="aws-card-detail">
+            <h4>この分野の役割</h4>
+
+            <p>
+              AWS環境の状態や操作履歴を確認し、
+              設定変更の追跡、障害の検知、運用作業の効率化を支援します。
+              複数アカウントの管理にも利用します。
+            </p>
+
+            <h4>主な利用場面</h4>
+
+            <ul>
+              <li>CPU使用率などを監視する</li>
+              <li>誰がどの操作を行ったか確認する</li>
+              <li>リソース設定の変更を追跡する</li>
+              <li>複数のAWSアカウントを管理する</li>
+            </ul>
+
+            <p class="aws-card-note">
+              学習ポイント：監視・操作履歴・構成管理の違い。
+            </p>
+          </div>
+        </details>
+
+        <!-- 09 IaC・構築・デプロイ・自動化 -->
+
+        <details
+          class="card aws-category-card"
+          data-category="automation"
+          data-search="iac 構築 デプロイ 自動化 automation cloudformation cdk codebuild codepipeline codedeploy systems manager infrastructure as code ci cd ビルド テスト リリース"
+        >
+          <summary>
+            <span class="aws-category-label">09 / AUTOMATION</span>
+
+            <h3 class="aws-category-title">IaC・構築・デプロイ・自動化</h3>
+
+            <span class="aws-service-label">主要サービス</span>
+
+            <ul class="aws-service-list">
+              <li>AWS CloudFormation</li>
+              <li>AWS CDK</li>
+              <li>AWS CodeBuild</li>
+              <li>AWS CodePipeline</li>
+              <li>AWS CodeDeploy</li>
+              <li>Systems Manager Automation</li>
+            </ul>
+          </summary>
+
+          <div class="aws-card-detail">
+            <h4>この分野の役割</h4>
+
+            <p>
+              インフラ構築やアプリケーションのビルド・テスト・デプロイを
+              コードや自動処理で管理します。
+              手作業を減らし、構築手順の再現性や運用効率を高めます。
+            </p>
+
+            <h4>主な利用場面</h4>
+
+            <ul>
+              <li>同じインフラ構成を繰り返し作る</li>
+              <li>コードでインフラを管理する</li>
+              <li>テストからリリースまでを自動化する</li>
+              <li>定型的な運用作業を自動実行する</li>
+            </ul>
+
+            <p class="aws-card-note">
+              学習ポイント：IaCとCI/CD、それぞれの役割。
+            </p>
+          </div>
+        </details>
+
+        <!-- 10 移行・転送・災害対策 -->
+
+        <details
+          class="card aws-category-card"
+          data-category="migration"
+          data-search="移行 転送 災害対策 migration application migration service database migration service dms datasync transfer family backup elastic disaster recovery レプリケーション DR"
+        >
+          <summary>
+            <span class="aws-category-label">10 / MIGRATION &amp; RECOVERY</span>
+
+            <h3 class="aws-category-title">移行・転送・災害対策</h3>
+
+            <span class="aws-service-label">主要サービス</span>
+
+            <ul class="aws-service-list">
+              <li>Application Migration Service</li>
+              <li>AWS DMS</li>
+              <li>AWS DataSync</li>
+              <li>AWS Transfer Family</li>
+              <li>AWS Backup</li>
+              <li>Elastic Disaster Recovery</li>
+            </ul>
+          </summary>
+
+          <div class="aws-card-detail">
+            <h4>この分野の役割</h4>
+
+            <p>
+              オンプレミス環境などからAWSへの移行、
+              データの転送、バックアップ、災害発生時の復旧を支援します。
+              データやシステムを安全に移行し、障害への備えを整えます。
+            </p>
+
+            <h4>主な利用場面</h4>
+
+            <ul>
+              <li>既存サーバーをAWSへ移行する</li>
+              <li>データベースを移行・複製する</li>
+              <li>大量のファイルを転送する</li>
+              <li>障害時にシステムを復旧できるようにする</li>
+            </ul>
+
+            <p class="aws-card-note">
+              学習ポイント：移行・転送・バックアップ・災害復旧の違い。
+            </p>
+          </div>
+        </details>
+
+        <!-- 11 コンテンツ配信・エッジ・フロントエンド -->
+
+        <details
+          class="card aws-category-card"
+          data-category="edge"
+          data-search="コンテンツ配信 エッジ フロントエンド edge cloudfront amplify global accelerator wavelength web モバイルアプリ キャッシュ 配信"
+        >
+          <summary>
+            <span class="aws-category-label">11 / EDGE &amp; FRONTEND</span>
+
+            <h3 class="aws-category-title">コンテンツ配信・エッジ・フロントエンド</h3>
+
+            <span class="aws-service-label">主要サービス</span>
+
+            <ul class="aws-service-list">
+              <li>Amazon CloudFront</li>
+              <li>AWS Amplify</li>
+              <li>AWS Global Accelerator</li>
+              <li>AWS Wavelength</li>
+            </ul>
+          </summary>
+
+          <div class="aws-card-detail">
+            <h4>この分野の役割</h4>
+
+            <p>
+              Webコンテンツの配信やフロントエンドアプリケーションの開発を支援し、
+              ユーザーに近い場所を活用した配信・処理などを実現します。
+            </p>
+
+            <h4>主な利用場面</h4>
+
+            <ul>
+              <li>Webサイトのコンテンツを高速に配信する</li>
+              <li>Webアプリケーションの開発・公開を効率化する</li>
+              <li>グローバルな通信を最適化する</li>
+              <li>5Gネットワークに近い場所で処理する</li>
+            </ul>
+
+            <p class="aws-card-note">
+              学習ポイント：ネットワークとエッジを活用した仕組みの違い。
+            </p>
+          </div>
+        </details>
+
+      </div>
+
+      <!-- 検索結果が0件の場合 -->
+
+      <div
+        class="aws-no-results"
+        id="aws-no-results"
+        hidden
+      >
+        <p>条件に一致する分野が見つかりませんでした。</p>
+        <p>別のキーワードで検索するか、分野を変更してください。</p>
+      </div>
+
     </section>
+
   </main>
+
+  <!-- フッター -->
 
   <footer>
     <p>© 2026 MIZUKI'S LAB</p>
   </footer>
+
 </body>
 </html>
+```
