@@ -3,24 +3,23 @@
    共通：スクロール表示アニメーション
 ======================================== */
 
-document.addEventListener("DOMContentLoaded", () => {
+function initializeScrollAnimations() {
   const onceTargets = document.querySelectorAll(
     ".hero, .section, footer"
   );
 
   const repeatTargets = document.querySelectorAll(".card");
 
-  // 見出し・セクション：初回だけ表示
   onceTargets.forEach((target) => {
     target.classList.add("reveal");
   });
 
-  // カード：画面に入るたびに表示
   repeatTargets.forEach((target) => {
     target.classList.add("reveal");
   });
 
-  // アニメーションに対応していない環境では表示を維持
+  // IntersectionObserverが使えない場合は
+  // アニメーションを無効化して内容を表示する
   if (
     !("IntersectionObserver" in window) ||
     window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -29,11 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
       target.classList.add("is-visible");
     });
 
-    initializeAwsLearningPage();
     return;
   }
 
-  // セクション：一度表示したら監視を終了
+  // セクションは一度表示したら監視終了
   const onceObserver = new IntersectionObserver(
     (entries, observer) => {
       entries.forEach((entry) => {
@@ -50,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
     onceObserver.observe(target);
   });
 
-  // カード：画面に入るたびに表示
+  // カードは画面に入るたびに表示
   const cardObserver = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -67,9 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
   repeatTargets.forEach((target) => {
     cardObserver.observe(target);
   });
-
-  initializeAwsLearningPage();
-});
+}
 
 
 /* ========================================
@@ -87,7 +83,7 @@ function initializeAwsLearningPage() {
     document.querySelectorAll(".aws-category-card")
   );
 
-  // AWS学習ノート以外のページでは何もしない
+  // AWS学習ノート以外のページでは終了
   if (
     !searchInput ||
     !categoryFilter ||
@@ -96,12 +92,17 @@ function initializeAwsLearningPage() {
     !noResults ||
     cards.length === 0
   ) {
+    console.log(
+      "[AWS検索] 初期化対象なし。AWS学習ノート以外のページです。"
+    );
     return;
   }
 
-  // 検索文字列を整える
+  console.log(`[AWS検索] 初期化成功：${cards.length}分野`);
+
+  // 全角・半角や英字の大文字・小文字を整える
   function normalizeText(text) {
-    return text
+    return String(text)
       .normalize("NFKC")
       .toLocaleLowerCase("ja")
       .trim();
@@ -115,10 +116,10 @@ function initializeAwsLearningPage() {
     let visibleCount = 0;
 
     cards.forEach((card) => {
-      const category = card.dataset.category;
+      const category = card.dataset.category || "";
 
       const searchableText = normalizeText(
-        card.innerText + " " + (card.dataset.search || "")
+        `${card.textContent} ${card.dataset.search || ""}`
       );
 
       const matchesKeyword =
@@ -130,28 +131,36 @@ function initializeAwsLearningPage() {
 
       const isVisible = matchesKeyword && matchesCategory;
 
+      // 表示・非表示を切り替える
       card.hidden = !isVisible;
+      card.style.display = isVisible ? "" : "none";
 
       if (isVisible) {
         visibleCount++;
       }
     });
 
-    // 件数表示
+    // 件数を更新
     resultCount.textContent =
       `${visibleCount} / ${cards.length}分野を表示中`;
 
-    // 検索結果が0件の場合の案内
+    // 0件の場合の案内を切り替える
     noResults.hidden = visibleCount !== 0;
+
+    console.log(
+      `[AWS検索] キーワード="${keyword}", ` +
+      `分野="${selectedCategory}", ` +
+      `表示件数=${visibleCount}`
+    );
   }
 
-  // キーワード入力時
+  // 入力した時点で検索
   searchInput.addEventListener("input", filterCategories);
 
-  // 分野選択時
+  // 分野を選択した時点で検索
   categoryFilter.addEventListener("change", filterCategories);
 
-  // 条件をリセット
+  // リセットボタン
   resetButton.addEventListener("click", () => {
     searchInput.value = "";
     categoryFilter.value = "all";
@@ -161,7 +170,24 @@ function initializeAwsLearningPage() {
     searchInput.focus();
   });
 
-  // 初期表示
+  // 最初の表示
   filterCategories();
+}
+
+
+/* ========================================
+   初期化
+======================================== */
+
+function initializePage() {
+  initializeScrollAnimations();
+  initializeAwsLearningPage();
+}
+
+// HTMLの読み込み状態に応じて初期化
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initializePage);
+} else {
+  initializePage();
 }
 ```
